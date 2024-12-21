@@ -1,0 +1,48 @@
+.movieDetailsPage {
+  padding: 20px;
+}
+
+.movieDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.movieDetails img {
+  width: 300px;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.movieDetails .title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.movieDetails .overview {
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 30px;
+  max-width: 600px;
+}
+
+.detailsNav {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.detailsNav a {
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.detailsNav a:hover {
+  background-color: #555;
+}

@@ -1,0 +1,32 @@
+.cast {
+  padding: 20px;
+}
+
+.cast h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.castList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.castMember {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.castMember img {
+  width: 150px;
+  height: 225px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.castMember .name {
+  font-size: 18px;
+  text-align: center;
+}
