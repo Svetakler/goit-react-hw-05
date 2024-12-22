@@ -12,7 +12,6 @@ const MovieDetailsPage = () => {
   const [credits, setCredits] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [error, setError] = useState(null);
-
   const [activeSection, setActiveSection] = useState(null);
 
   useEffect(() => {
@@ -34,14 +33,16 @@ const MovieDetailsPage = () => {
         setCredits(creditsRes.data.cast);
         setReviews(reviewsRes.data.results);
       } catch (error) {
-        setError("Failed to load movie details.");
+        setError("Failed to load movie details. Please try again later.");
       }
     };
 
     fetchMovieDetails();
   }, [movieId]);
 
-  const goBack = () => navigate(-1);
+  const goBack = () => {
+    navigate(-1);
+  };
 
   const toggleSection = (section) => {
     setActiveSection((prevSection) =>
@@ -59,7 +60,11 @@ const MovieDetailsPage = () => {
       <div className="movie-details">
         <img
           className="movie-poster"
-          src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+          src={
+            movie.poster_path
+              ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+              : "path/to/default-image.jpg"
+          }
           alt={movie.title}
         />
         <div className="movie-info">
@@ -89,13 +94,17 @@ const MovieDetailsPage = () => {
         </button>
       </div>
 
-      {activeSection === "cast" && (
+      {activeSection === "cast" && credits.length > 0 && (
         <div id="cast" className="cast-list">
           <h2>Cast</h2>
           {credits.slice(0, 10).map((actor) => (
             <div key={actor.cast_id} className="cast-item">
               <img
-                src={`https://image.tmdb.org/t/p/w200/${actor.profile_path}`}
+                src={
+                  actor.profile_path
+                    ? `https://image.tmdb.org/t/p/w200/${actor.profile_path}`
+                    : "path/to/default-avatar.jpg"
+                }
                 alt={actor.name}
               />
               <p>
@@ -107,20 +116,20 @@ const MovieDetailsPage = () => {
         </div>
       )}
 
-      {activeSection === "reviews" && (
+      {activeSection === "reviews" && reviews.length > 0 && (
         <div id="reviews">
           <h2>Reviews</h2>
-          {reviews.length > 0 ? (
-            reviews.map((review) => (
-              <div key={review.id} className="review-item">
-                <h3>Author: {review.author}</h3>
-                <p>{review.content}</p>
-              </div>
-            ))
-          ) : (
-            <p>No reviews available.</p>
-          )}
+          {reviews.map((review) => (
+            <div key={review.id} className="review-item">
+              <h3>Author: {review.author}</h3>
+              <p>{review.content}</p>
+            </div>
+          ))}
         </div>
+      )}
+
+      {activeSection === "reviews" && reviews.length === 0 && (
+        <p>No reviews available.</p>
       )}
     </div>
   );
