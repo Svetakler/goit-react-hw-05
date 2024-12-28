@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
+import MovieList from "../../components/MovieList/MovieList";
 
 const API_KEY = "3fa3075458c3b845bce5fb93c1046053";
 const BASE_URL = "https://api.themoviedb.org/3";
@@ -73,24 +74,7 @@ const MoviesPage = () => {
 
       {error && <div style={{ color: "red" }}>{error}</div>}
 
-      <ul>
-        {movies.map((movie) => (
-          <li key={movie.id}>
-            <Link to={`/movies/${movie.id}`}>
-              <h2>{movie.title}</h2>
-              {movie.poster_path && (
-                <img
-                  src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
-                  alt={movie.title}
-                  width={100}
-                />
-              )}
-            </Link>
-            <p>Release Date: {movie.release_date || "N/A"}</p>
-            <p>Rating: {movie.vote_average || "N/A"}</p>
-          </li>
-        ))}
-      </ul>
+      {!loading && !error && <MovieList movies={movies} />}
     </div>
   );
 };

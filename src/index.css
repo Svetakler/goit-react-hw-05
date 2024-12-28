@@ -39,12 +39,6 @@ body {
   border-top: 1px solid #ccc;
 }
 
-.additional-info a {
-  color: #007bff;
-  text-decoration: none;
-  font-weight: bold;
-}
-
 .additional-info a:hover {
   text-decoration: underline;
 }

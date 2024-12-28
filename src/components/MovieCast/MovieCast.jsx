@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import styles from "./MovieCast.module.css";
 
 const API_KEY = "3fa3075458c3b845bce5fb93c1046053";
 const BASE_URL = "https://api.themoviedb.org/3";
@@ -32,11 +33,11 @@ const MovieCast = () => {
   if (cast.length === 0) return <div>Loading...</div>;
 
   return (
-    <div>
+    <div className={styles.cast}>
       <h2>Cast</h2>
-      <div className="cast-list">
+      <div className={styles.castList}>
         {cast.map((actor) => (
-          <div key={actor.cast_id} className="cast-item">
+          <div key={actor.cast_id} className={styles.castMember}>
             <img
               src={
                 actor.profile_path
@@ -45,7 +46,7 @@ const MovieCast = () => {
               }
               alt={actor.name}
             />
-            <p>
+            <p className={styles.name}>
               <strong>{actor.name}</strong>
             </p>
             <p>Character: {actor.character}</p>

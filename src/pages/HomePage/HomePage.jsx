@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import MovieList from "../../components/MovieList/MovieList";
 
 const API_KEY = "3fa3075458c3b845bce5fb93c1046053";
 const BASE_URL = "https://api.themoviedb.org/3";
@@ -37,13 +37,7 @@ const HomePage = () => {
   return (
     <div>
       <h1>Popular Movies</h1>
-      <ul>
-        {movies.map((movie) => (
-          <li key={movie.id}>
-            <Link to={`/movies/${movie.id}`}>{movie.title}</Link>
-          </li>
-        ))}
-      </ul>
+      <MovieList movies={movies} />
     </div>
   );
 };

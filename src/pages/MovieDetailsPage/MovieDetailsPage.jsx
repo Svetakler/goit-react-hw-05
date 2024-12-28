@@ -1,6 +1,7 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import styles from "./MovieDetailsPage.module.css";
 
 const API_KEY = "3fa3075458c3b845bce5fb93c1046053";
 const BASE_URL = "https://api.themoviedb.org/3";
@@ -13,6 +14,9 @@ const MovieDetailsPage = () => {
   const [reviews, setReviews] = useState([]);
   const [error, setError] = useState(null);
   const [activeSection, setActiveSection] = useState(null);
+
+  const castRef = useRef(null);
+  const reviewsRef = useRef(null);
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -40,8 +44,16 @@ const MovieDetailsPage = () => {
     fetchMovieDetails();
   }, [movieId]);
 
+  useEffect(() => {
+    if (activeSection === "cast" && castRef.current) {
+      castRef.current.scrollIntoView({ behavior: "smooth" });
+    } else if (activeSection === "reviews" && reviewsRef.current) {
+      reviewsRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [activeSection]);
+
   const goBack = () => {
-    navigate(-1);
+    navigate("/", { replace: true });
   };
 
   const toggleSection = (section) => {
@@ -54,12 +66,14 @@ const MovieDetailsPage = () => {
   if (!movie) return <div>Loading...</div>;
 
   return (
-    <div className="container">
-      <button onClick={goBack}>&lt; Go Back</button>
+    <div className={styles.container}>
+      <button onClick={goBack} className={styles.goBack}>
+        &lt; Go Back
+      </button>
 
-      <div className="movie-details">
+      <div className={styles.movieDetails}>
         <img
-          className="movie-poster"
+          className={styles.moviePoster}
           src={
             movie.poster_path
               ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
@@ -67,7 +81,7 @@ const MovieDetailsPage = () => {
           }
           alt={movie.title}
         />
-        <div className="movie-info">
+        <div className={styles.movieInfo}>
           <h1>
             {movie.title} ({movie.release_date?.split("-")[0]})
           </h1>
@@ -84,21 +98,29 @@ const MovieDetailsPage = () => {
         </div>
       </div>
 
-      <div className="additional-info">
+      <div className={styles.additionalInfo}>
         <h2>Additional information</h2>
-        <button onClick={() => toggleSection("cast")}>
+        <Link
+          to="#cast"
+          className={styles.link}
+          onClick={() => toggleSection("cast")}
+        >
           {activeSection === "cast" ? "Hide Cast" : "Show Cast"}
-        </button>
-        <button onClick={() => toggleSection("reviews")}>
+        </Link>
+        <Link
+          to="#reviews"
+          className={styles.link}
+          onClick={() => toggleSection("reviews")}
+        >
           {activeSection === "reviews" ? "Hide Reviews" : "Show Reviews"}
-        </button>
+        </Link>
       </div>
 
       {activeSection === "cast" && credits.length > 0 && (
-        <div id="cast" className="cast-list">
+        <div id="cast" ref={castRef} className={styles.castList}>
           <h2>Cast</h2>
           {credits.slice(0, 10).map((actor) => (
-            <div key={actor.cast_id} className="cast-item">
+            <div key={actor.cast_id} className={styles.castItem}>
               <img
                 src={
                   actor.profile_path
@@ -117,10 +139,10 @@ const MovieDetailsPage = () => {
       )}
 
       {activeSection === "reviews" && reviews.length > 0 && (
-        <div id="reviews">
+        <div id="reviews" ref={reviewsRef} className={styles.reviewsList}>
           <h2>Reviews</h2>
           {reviews.map((review) => (
-            <div key={review.id} className="review-item">
+            <div key={review.id} className={styles.reviewItem}>
               <h3>Author: {review.author}</h3>
               <p>{review.content}</p>
             </div>
