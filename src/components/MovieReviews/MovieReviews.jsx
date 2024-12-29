@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import styles from "./MovieReviews.module.css";
 
 const API_KEY = "3fa3075458c3b845bce5fb93c1046053";
 const BASE_URL = "https://api.themoviedb.org/3";
@@ -30,14 +31,15 @@ const MovieReviews = () => {
 
   if (error) return <div>{error}</div>;
   if (reviews.length === 0) return <div>No reviews available.</div>;
+
   return (
-    <div>
+    <div className={styles.reviews}>
       <h2>Reviews</h2>
-      <div className="reviews-list">
+      <div>
         {reviews.map((review) => (
-          <div key={review.id} className="review-item">
-            <h3>Author: {review.author}</h3>
-            <p>{review.content}</p>
+          <div key={review.id} className={styles.review}>
+            <h3 className={styles.author}>Author: {review.author}</h3>
+            <p className={styles.content}>{review.content}</p>
           </div>
         ))}
       </div>

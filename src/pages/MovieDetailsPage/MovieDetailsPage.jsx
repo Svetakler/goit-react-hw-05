@@ -1,4 +1,4 @@
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import styles from "./MovieDetailsPage.module.css";
@@ -9,6 +9,10 @@ const BASE_URL = "https://api.themoviedb.org/3";
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const backLocationRef = useRef(location.state?.from || "/");
+
   const [movie, setMovie] = useState(null);
   const [credits, setCredits] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -53,7 +57,7 @@ const MovieDetailsPage = () => {
   }, [activeSection]);
 
   const goBack = () => {
-    navigate("/", { replace: true });
+    navigate(backLocationRef.current);
   };
 
   const toggleSection = (section) => {

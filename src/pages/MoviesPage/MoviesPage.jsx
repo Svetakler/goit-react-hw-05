@@ -7,12 +7,13 @@ const API_KEY = "3fa3075458c3b845bce5fb93c1046053";
 const BASE_URL = "https://api.themoviedb.org/3";
 
 const MoviesPage = () => {
-  const [query, setQuery] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get("query") || "");
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const searchQuery = query.get("query") || "";
+  const searchQuery = searchParams.get("query") || "";
 
   useEffect(() => {
     if (!searchQuery) return;
@@ -48,27 +49,29 @@ const MoviesPage = () => {
     fetchMovies();
   }, [searchQuery]);
 
-  const handleSearch = () => {
-    if (!searchQuery.trim()) {
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (!query.trim()) {
       setError("Please enter a valid search term.");
       return;
     }
 
     setError(null);
-    setQuery({ query: searchQuery.trim() });
+    setSearchParams({ query: query.trim() });
   };
 
   return (
     <div>
       <h1>Search Movies</h1>
-
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={(e) => setQuery({ query: e.target.value })}
-        placeholder="Enter movie name"
-      />
-      <button onClick={handleSearch}>Search</button>
+      <form onSubmit={handleSearch}>
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Enter movie name"
+        />
+        <button type="submit">Search</button>
+      </form>
 
       {loading && <div>Loading...</div>}
 
